@@ -1,0 +1,233 @@
+export const defaultPortfolioContent = {
+  hero: {
+    profileImage: '',
+    greeting_en: "Hello, I'm",
+    greeting_ar: 'مرحباً، أنا',
+    description_en:
+      'Passionate about building innovative solutions and turning ideas into reality. Currently studying at the Faculty of Engineering, Mansoura National University.',
+    description_ar:
+      'شغوف ببناء حلول مبتكرة وتحويل الأفكار إلى واقع عملي. أدرس حالياً في كلية الهندسة بجامعة المنصورة الأهلية.',
+    quote_en: 'Building the future, one line of code at a time',
+    quote_ar: 'أبني المستقبل، سطر برمجيات واحد في كل مرة',
+    roles_en: ['Future Software Engineer', 'Engineering Student'],
+    roles_ar: ['مهندس برمجيات المستقبل', 'طالب هندسة'],
+  },
+  about: {
+    text_en:
+      'I am Ahmed EL Saeed, a dedicated engineering student at Mansoura National University with a strong passion for software engineering, problem-solving, and technology. I strive to combine my engineering knowledge with cutting-edge technologies to create impactful solutions. I am always eager to learn, grow, and take on new challenges.',
+    text_ar:
+      'أنا أحمد السعيد، طالب هندسة طموح ومثابر بجامعة المنصورة الأهلية، لدي شغف قوي بهندسة البرمجيات، حل المشكلات، والتطوير البرمجي. أسعى لدمج معرفتي الهندسية مع أحدث التقنيات لإنشاء حلول وتطبيقات برمجية متميزة ذات أثر إيجابي. متطلع دائماً للتعلم المستمر، مواكبة التطورات التقنية ومواجهة تحديات برمجية جديدة.',
+    name_en: 'Ahmed EL Saeed',
+    name_ar: 'أحمد السعيد',
+    university_en: 'Mansoura National University',
+    university_ar: 'جامعة المنصورة الأهلية',
+    faculty_en: 'Faculty of Engineering',
+    faculty_ar: 'كلية الهندسة',
+    location_en: 'Egypt',
+    location_ar: 'مصر',
+    timeline: [
+      {
+        id: 'timeline-1',
+        title_en: 'Faculty of Engineering',
+        title_ar: 'كلية الهندسة',
+        subtitle_en: 'Mansoura National University',
+        subtitle_ar: 'جامعة المنصورة الأهلية',
+        period_en: 'Current',
+        period_ar: 'حالي',
+        desc_en: 'Pursuing engineering degree with focus on technology and innovation',
+        desc_ar: 'دراسة تخصص الهندسة مع التركيز على التقنيات الحديثة والابتكار التكنولوجي',
+      },
+      {
+        id: 'timeline-2',
+        title_en: 'Secondary Education',
+        title_ar: 'التعليم الثانوي',
+        subtitle_en: 'Completed with Distinction',
+        subtitle_ar: 'أتممته بتفوق وتقدير ممتاز',
+        period_en: 'Graduated',
+        period_ar: 'تخرجت',
+        desc_en: 'Completed secondary education with excellent academic performance',
+        desc_ar: 'إنهاء المرحلة الثانوية بمعدل متميز وأداء أكاديمي متفوق',
+      },
+    ],
+  },
+  skills: {
+    technical: [
+      { id: 'html5', name: 'HTML5', category: 'frontend' },
+      { id: 'css3', name: 'CSS3', category: 'frontend' },
+      { id: 'javascript', name: 'JavaScript', category: 'frontend' },
+      { id: 'typescript', name: 'TypeScript', category: 'frontend' },
+      { id: 'react', name: 'React', category: 'frontend' },
+      { id: 'nextjs', name: 'Next.js', category: 'frontend' },
+      { id: 'tailwind', name: 'Tailwind CSS', category: 'frontend' },
+      { id: 'bootstrap', name: 'Bootstrap', category: 'frontend' },
+      { id: 'nodejs', name: 'Node.js', category: 'backend' },
+      { id: 'express', name: 'Express', category: 'backend' },
+      { id: 'python', name: 'Python', category: 'languages' },
+      { id: 'cpp', name: 'C/C++', category: 'languages' },
+      { id: 'git', name: 'Git', category: 'tools' },
+      { id: 'github', name: 'GitHub', category: 'tools' },
+    ],
+    soft: [
+      { id: 'problem-solving', name_en: 'Problem Solving', name_ar: 'حل المشكلات' },
+      { id: 'teamwork', name_en: 'Teamwork', name_ar: 'العمل الجماعي' },
+      { id: 'communication', name_en: 'Communication', name_ar: 'التواصل' },
+      { id: 'leadership', name_en: 'Leadership', name_ar: 'القيادة' },
+      { id: 'time-management', name_en: 'Time Management', name_ar: 'إدارة الوقت' },
+      { id: 'critical-thinking', name_en: 'Critical Thinking', name_ar: 'التفكير النقدي' },
+      { id: 'adaptability', name_en: 'Adaptability', name_ar: 'التكيّف' },
+      { id: 'fast-learning', name_en: 'Fast Learning', name_ar: 'سرعة التعلّم' },
+    ],
+  },
+  cv: {
+    contact: {
+      email: 'ahmedelsaeed2666@gmail.com',
+      phone: '+20 10 61931040',
+      phoneHref: 'https://wa.me/201061931040',
+      location_en: 'Egypt',
+      location_ar: 'مصر',
+      linkedinLabel: 'LinkedIn Profile',
+      linkedin: 'https://www.linkedin.com/in/ahmed-el-saeed-01b927330',
+      githubLabel: 'GitHub Profile',
+      github: '#',
+    },
+    en: {
+      name: 'Ahmed EL Saeed',
+      downloadText: 'Download PDF / Print',
+      subtitle: 'Faculty of Engineering | Future Software Engineer',
+      summaryTitle: 'Professional Summary',
+      summaryText:
+        'Dedicated engineering student at Mansoura National University with a strong passion for software engineering, problem-solving, and technology. Experienced in frontend development, algorithms, competitive programming, and engineering designs.',
+      educationTitle: 'Education',
+      educationList: [
+        {
+          id: 'engineering',
+          degree: 'Faculty of Engineering',
+          school: 'Mansoura National University',
+          period: 'Current',
+          desc: 'Pursuing an engineering degree with focus on technology and innovation.',
+        },
+        {
+          id: 'secondary',
+          degree: 'Secondary Education',
+          school: 'Completed with Distinction',
+          period: 'Graduated',
+          desc: 'Completed secondary education with excellent academic performance.',
+        },
+      ],
+      skillsTitle: 'Skills',
+      skillsList: [
+        { id: 'programming', category: 'Programming Languages', items: ['C/C++', 'Python', 'Java', 'JavaScript'] },
+        { id: 'web', category: 'Web Development', items: ['HTML5 / CSS3', 'React.js', 'Node.js', 'Responsive Design'] },
+        { id: 'problem-solving', category: 'Problem Solving', items: ['Data Structures', 'Algorithms', 'Competitive Programming'] },
+        { id: 'soft', category: 'Soft Skills', items: ['Leadership', 'Teamwork', 'Communication', 'Time Management'] },
+      ],
+      projectsTitle: 'Key Projects',
+      projectsList: [
+        {
+          id: 'portfolio',
+          title: 'Portfolio Website',
+          tech: 'React.js, CSS3, Framer Motion',
+          desc: 'A modern, responsive personal portfolio built with React.js featuring smooth animations and a dark theme.',
+        },
+        {
+          id: 'task-app',
+          title: 'Task Management App',
+          tech: 'React.js, Node.js',
+          desc: 'A task management application with organized workflows and collaborative features.',
+        },
+      ],
+      certsTitle: 'Certifications',
+      certsList: [
+        { id: 'react-cert', title: 'React.js Advanced Development', issuer: 'Coursera', date: '2024' },
+        { id: 'python-cert', title: 'Python for Data Science', issuer: 'IBM', date: '2024' },
+      ],
+      achievementsTitle: 'Achievements',
+      achievementsList: [
+        {
+          id: 'academic-excellence',
+          title: 'Academic Excellence Award',
+          desc: 'Recognized for outstanding academic performance in engineering studies.',
+        },
+        {
+          id: 'hackathon-finalist',
+          title: 'Hackathon Finalist',
+          desc: 'Reached the finals in a national coding competition.',
+        },
+      ],
+    },
+    ar: {
+      name: 'أحمد السعيد',
+      downloadText: 'تحميل PDF / طباعة',
+      subtitle: 'كلية الهندسة | مهندس برمجيات مستقبلي',
+      summaryTitle: 'الملخص المهني',
+      summaryText:
+        'طالب هندسة في جامعة المنصورة الأهلية، مهتم بهندسة البرمجيات وحل المشكلات وبناء واجهات ويب حديثة. أعمل على تطوير مهاراتي التقنية والعملية لصناعة حلول مفيدة وقابلة للتطوير.',
+      educationTitle: 'التعليم',
+      educationList: [
+        {
+          id: 'engineering-ar',
+          degree: 'كلية الهندسة',
+          school: 'جامعة المنصورة الأهلية',
+          period: 'حالي',
+          desc: 'دراسة الهندسة مع اهتمام بالتقنيات الحديثة والابتكار.',
+        },
+        {
+          id: 'secondary-ar',
+          degree: 'التعليم الثانوي',
+          school: 'تم الانتهاء بتفوق',
+          period: 'تخرج',
+          desc: 'إنهاء المرحلة الثانوية بأداء أكاديمي متميز.',
+        },
+      ],
+      skillsTitle: 'المهارات',
+      skillsList: [
+        { id: 'programming-ar', category: 'لغات البرمجة', items: ['C/C++', 'Python', 'Java', 'JavaScript'] },
+        { id: 'web-ar', category: 'تطوير الويب', items: ['HTML5 / CSS3', 'React.js', 'Node.js', 'Responsive Design'] },
+        { id: 'problem-solving-ar', category: 'حل المشكلات', items: ['Data Structures', 'Algorithms', 'Competitive Programming'] },
+        { id: 'soft-ar', category: 'المهارات الشخصية', items: ['Leadership', 'Teamwork', 'Communication', 'Time Management'] },
+      ],
+      projectsTitle: 'أبرز المشاريع',
+      projectsList: [
+        {
+          id: 'portfolio-ar',
+          title: 'موقع البورتفوليو',
+          tech: 'React.js, CSS3, Framer Motion',
+          desc: 'موقع شخصي متجاوب مبني بـ React.js مع حركات سلسة وتصميم داكن.',
+        },
+        {
+          id: 'task-app-ar',
+          title: 'تطبيق إدارة المهام',
+          tech: 'React.js, Node.js',
+          desc: 'تطبيق لتنظيم المهام وسير العمل بطريقة سهلة ومنظمة.',
+        },
+      ],
+      certsTitle: 'الشهادات',
+      certsList: [
+        { id: 'react-cert-ar', title: 'React.js Advanced Development', issuer: 'Coursera', date: '2024' },
+        { id: 'python-cert-ar', title: 'Python for Data Science', issuer: 'IBM', date: '2024' },
+      ],
+      achievementsTitle: 'الإنجازات',
+      achievementsList: [
+        {
+          id: 'academic-excellence-ar',
+          title: 'جائزة التميز الأكاديمي',
+          desc: 'تقدير للأداء الأكاديمي المتميز في الدراسة الهندسية.',
+        },
+        {
+          id: 'hackathon-finalist-ar',
+          title: 'الوصول لنهائي هاكاثون',
+          desc: 'الوصول للمرحلة النهائية في مسابقة برمجية وطنية.',
+        },
+      ],
+    },
+  },
+  achievements: {
+    stats: [],
+    items: [],
+  },
+  projects: [],
+  events: [],
+  certifications: [],
+}
+
+export const cloneDefaultContent = () => JSON.parse(JSON.stringify(defaultPortfolioContent))
