@@ -92,9 +92,6 @@ const CV = () => {
             <button className="cv-action-pill cv-ats-btn" onClick={handleAtsCvClick} type="button" title="Download ATS Resume">
               <FiFileText /> {t('cvAtsBtn')}
             </button>
-            <button className="cv-action-pill cv-download-btn" onClick={handleFullCvClick} type="button" title="Download Uploaded CV">
-              <FiDownload /> {t('cvDownload')}
-            </button>
             <button className="cv-action-pill cv-print-btn" onClick={handlePrintPage} type="button" title="Download / Print Web CV">
               <FiPrinter /> {t('cvPrintBtn')}
             </button>
