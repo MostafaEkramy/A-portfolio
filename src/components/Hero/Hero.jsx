@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaWhatsapp, FaGithub } from 'react-icons/fa'
-import { FiChevronDown, FiDownload } from 'react-icons/fi'
+import { FiChevronDown } from 'react-icons/fi'
 import { useTranslation } from '../../context/TranslationContext'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent'
 import './Hero.css'
@@ -105,9 +105,6 @@ const Hero = () => {
           <motion.div className="hero-buttons" variants={item}>
             <button className="btn-primary" onClick={() => navigate('/projects')}>
               {t('heroBtnProjects')}
-            </button>
-            <button className="btn-outline hero-btn-cv" onClick={() => navigate('/cv')}>
-              <FiDownload /> {t('heroBtnCV')}
             </button>
             <button className="btn-outline" onClick={() => navigate('/contact')}>
               {t('heroBtnContact')}
