@@ -103,19 +103,27 @@ export const compressImageToBase64 = async (file, options = {}) => {
     throw new Error('Please choose a valid image file.')
   }
 
+  const originalKB = Math.round(file.size / 1024)
   const settings = { ...BASE64_OPTIONS, ...options }
   const image = await loadImageFromFile(file)
   const canvas = resizeImage(image, settings.maxWidth, settings.maxHeight)
-  const dataUrl = canvasToBase64(canvas, settings.quality)
+  let dataUrl = canvasToBase64(canvas, settings.quality)
 
   // Check that the base64 string isn't too large for Firestore
   // Firestore max doc = 1 MB, but we share the doc with other fields
-  const sizeKB = Math.round((dataUrl.length * 3) / 4 / 1024)
+  let sizeKB = Math.round((dataUrl.length * 3) / 4 / 1024)
   if (sizeKB > 500) {
     // Re-compress at lower quality if too large
     const lowerCanvas = resizeImage(image, 600, 600)
-    return canvasToBase64(lowerCanvas, 0.4)
+    dataUrl = canvasToBase64(lowerCanvas, 0.4)
+    sizeKB = Math.round((dataUrl.length * 3) / 4 / 1024)
   }
+
+  const reduction = originalKB > 0 ? Math.round((1 - sizeKB / originalKB) * 100) : 0
+  console.log(
+    `%c✅ Image compressed & ready: ${originalKB}KB → ~${sizeKB}KB (${reduction}% reduction)`,
+    'color: #00B4D8; font-weight: bold;',
+  )
 
   return dataUrl
 }

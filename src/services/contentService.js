@@ -300,6 +300,10 @@ export const savePortfolioContent = async (content) => {
       dataUrl,
       updatedAt: serverTimestamp(),
     })
+    console.log(
+      `%c📄 CV file saved → cvFiles/${docId} (~${Math.round((dataUrl.length * 3) / 4 / 1024)}KB)`,
+      'color: #00B4D8; font-weight: bold;',
+    )
   }
 
   // 4. Save base64 images to separate documents
@@ -310,6 +314,10 @@ export const savePortfolioContent = async (content) => {
       dataUrl,
       createdAt: serverTimestamp(),
     })
+    console.log(
+      `%c🖼️ Image saved → portfolioImages/${key} (~${Math.round((dataUrl.length * 3) / 4 / 1024)}KB)`,
+      'color: #00B4D8; font-weight: bold;',
+    )
   }
 
   // 5. Save main content (with image/cv references instead of base64)
@@ -321,6 +329,11 @@ export const savePortfolioContent = async (content) => {
       updatedAt: serverTimestamp(),
     },
     { merge: true },
+  )
+
+  console.log(
+    `%c🚀 Content saved to Firestore → portfolioData/main (${imageEntries.length} images, ${cvEntries.length} CV files)`,
+    'color: #48cae4; font-weight: bold; font-size: 13px;',
   )
 
   // 6. Invalidate local cache so next load gets fresh data
