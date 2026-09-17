@@ -133,8 +133,9 @@ const translations = {
 
     // CV
     cvTitle: 'Curriculum Vitae',
-    cvDownload: 'Download PDF / Print',
+    cvDownload: 'Download CV',
     cvAtsBtn: 'ATS CV',
+    cvPrintBtn: 'Download PDF / Print',
     cvBack: 'Back to Portfolio',
     cvSummary: 'Professional Summary',
     cvSummaryText: 'Dedicated engineering student at Mansoura National University with a strong passion for software engineering, problem-solving, and technology. Experienced in frontend development (React.js), algorithms, competitive programming, and engineering designs. Eager to create scalable software applications and solve complex engineering problems.',
@@ -275,8 +276,9 @@ const translations = {
 
     // CV
     cvTitle: 'السيرة الذاتية',
-    cvDownload: 'تحميل PDF / طباعة',
+    cvDownload: 'Download CV',
     cvAtsBtn: 'ATS CV',
+    cvPrintBtn: 'Download PDF / Print',
     cvBack: 'العودة للموقع',
     cvSummary: 'الملخص المهني',
     cvSummaryText: 'طالب هندسة طموح ومثابر بجامعة المنصورة الأهلية، شغوف بهندسة البرمجيات، حل المشكلات والبرمجة التنافسية. متمكن من تقنيات تطوير واجهات الويب وتصميم الأنظمة الهندسية. متطلع للمساهمة في بناء تطبيقات برمجية متطورة وحل المشكلات البرمجية المعقدة.',

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { FiGithub, FiLinkedin, FiMail, FiMapPin, FiPhone, FiPrinter, FiArrowLeft, FiFileText } from 'react-icons/fi'
+import { FiGithub, FiLinkedin, FiMail, FiMapPin, FiPhone, FiPrinter, FiArrowLeft, FiFileText, FiDownload } from 'react-icons/fi'
 import { useTranslation } from '../../context/TranslationContext'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent'
 import './CV.css'
@@ -43,40 +43,41 @@ const CV = () => {
     },
   ].filter((item) => item.value)
 
-  const handleFullCvClick = () => {
-    if (cv.fullCvUrl) {
-      if (cv.fullCvUrl.startsWith('data:')) {
-        const link = document.createElement('a')
-        link.href = cv.fullCvUrl
-        link.download = 'Ahmed_EL_Saeed_CV.pdf'
-        link.target = '_blank'
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-      } else {
-        window.open(cv.fullCvUrl, '_blank', 'noopener,noreferrer')
-      }
-    } else {
+  const downloadFile = (fileUrl, defaultFilename) => {
+    if (!fileUrl) {
       window.print()
+      return
+    }
+    if (fileUrl.startsWith('data:')) {
+      const link = document.createElement('a')
+      link.href = fileUrl
+      link.download = defaultFilename
+      link.target = '_blank'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    } else {
+      const link = document.createElement('a')
+      link.href = fileUrl
+      link.download = defaultFilename
+      link.target = '_blank'
+      link.rel = 'noopener noreferrer'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
     }
   }
 
+  const handleFullCvClick = () => {
+    downloadFile(cv.fullCvUrl, 'Ahmed_EL_Saeed_CV.pdf')
+  }
+
   const handleAtsCvClick = () => {
-    if (cv.atsCvUrl) {
-      if (cv.atsCvUrl.startsWith('data:')) {
-        const link = document.createElement('a')
-        link.href = cv.atsCvUrl
-        link.download = 'Ahmed_EL_Saeed_ATS_Resume.pdf'
-        link.target = '_blank'
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-      } else {
-        window.open(cv.atsCvUrl, '_blank', 'noopener,noreferrer')
-      }
-    } else {
-      window.print()
-    }
+    downloadFile(cv.atsCvUrl, 'Ahmed_EL_Saeed_ATS_Resume.pdf')
+  }
+
+  const handlePrintPage = () => {
+    window.print()
   }
 
   return (
@@ -88,11 +89,14 @@ const CV = () => {
           </button>
 
           <div className="cv-actions-right">
-            <button className="cv-ats-btn" onClick={handleAtsCvClick} type="button">
+            <button className="cv-action-pill cv-ats-btn" onClick={handleAtsCvClick} type="button" title="Download ATS Resume">
               <FiFileText /> {t('cvAtsBtn')}
             </button>
-            <button className="cv-download-btn" onClick={handleFullCvClick} type="button">
-              <FiPrinter /> {data.downloadText || t('cvDownload')}
+            <button className="cv-action-pill cv-download-btn" onClick={handleFullCvClick} type="button" title="Download Uploaded CV">
+              <FiDownload /> {t('cvDownload')}
+            </button>
+            <button className="cv-action-pill cv-print-btn" onClick={handlePrintPage} type="button" title="Download / Print Web CV">
+              <FiPrinter /> {t('cvPrintBtn')}
             </button>
           </div>
         </div>

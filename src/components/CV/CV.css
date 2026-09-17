@@ -24,15 +24,16 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 20px;
+  padding: 9px 20px;
   border-radius: 999px;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(0, 180, 216, 0.3);
+  background: rgba(3, 4, 94, 0.25);
+  border: 1.5px solid rgba(0, 180, 216, 0.4);
   color: var(--accent);
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(8px);
 }
 
 .cv-back-btn:hover {
@@ -40,55 +41,52 @@
   border-color: var(--accent);
   color: #fff;
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(0, 180, 216, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
 }
 
-.cv-ats-btn {
+.cv-action-pill {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 22px;
+  gap: 9px;
+  padding: 9px 22px;
   border-radius: 999px;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1.5px solid rgba(0, 180, 216, 0.35);
-  color: var(--accent);
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   backdrop-filter: blur(8px);
 }
 
-.cv-ats-btn:hover {
-  background: rgba(0, 180, 216, 0.18);
-  border-color: var(--accent);
-  color: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(0, 180, 216, 0.25);
+.cv-ats-btn,
+.cv-download-btn {
+  background: rgba(3, 4, 94, 0.3);
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 10px rgba(0, 180, 216, 0.15);
 }
 
-.cv-download-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 24px;
-  border-radius: 999px;
+.cv-ats-btn:hover,
+.cv-download-btn:hover {
+  background: rgba(0, 180, 216, 0.18);
+  border-color: #48cae4;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(0, 180, 216, 0.4);
+}
+
+.cv-print-btn {
   background: var(--accent);
   border: 1.5px solid var(--accent);
   color: #010a1a;
-  font-size: 0.88rem;
-  font-weight: 800;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  box-shadow: 0 4px 20px rgba(0, 180, 216, 0.35);
+  box-shadow: 0 4px 15px rgba(0, 180, 216, 0.35);
 }
 
-.cv-download-btn:hover {
+.cv-print-btn:hover {
   background: #ffffff;
   border-color: #ffffff;
   color: #010a1a;
   transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(0, 180, 216, 0.45);
+  box-shadow: 0 6px 25px rgba(0, 180, 216, 0.5);
 }
 
 .cv-document {
