@@ -79,6 +79,8 @@ export const defaultPortfolioContent = {
     ],
   },
   cv: {
+    fullCvUrl: '',
+    atsCvUrl: '',
     contact: {
       email: 'ahmedelsaeed2666@gmail.com',
       phone: '+20 10 61931040',

@@ -6,7 +6,6 @@ import {
   FiBookOpen,
   FiCalendar,
   FiCheck,
-  FiCode,
   FiEdit2,
   FiFileText,
   FiGrid,
@@ -40,7 +39,6 @@ import './AdminPanel.css'
 const adminTabs = [
   { key: 'home', label: 'Home', icon: FiHome, desc: 'Hero section & profile image' },
   { key: 'about', label: 'About', icon: FiUser, desc: 'About section & timeline' },
-  { key: 'skills', label: 'Skills', icon: FiCode, desc: 'Technical & soft skills' },
   { key: 'cv', label: 'CV', icon: FiFileText, desc: 'Curriculum vitae content' },
   { key: 'achievements', label: 'Achievements', icon: FiTrendingUp, desc: 'Stats & timeline achievements' },
   { key: 'projects', label: 'Projects', icon: FiGrid, desc: 'Project cards & images' },
@@ -188,6 +186,8 @@ const LoginPanel = ({ credentials, setCredentials, onSubmit, status, isSubmittin
 const HomeEditor = ({ draft, updateDraft, setStatus, uploadingId, setUploadingId }) => {
   const hero = draft.hero || {}
   const [imgError, setImgError] = useState(false)
+  const [uploadMode, setUploadMode] = useState('file')
+  const [isDragging, setIsDragging] = useState(false)
 
   useEffect(() => {
     setImgError(false)
@@ -217,16 +217,33 @@ const HomeEditor = ({ draft, updateDraft, setStatus, uploadingId, setUploadingId
     }
   }
 
+  const handleDragOver = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(true)
+  }
+
+  const handleDragLeave = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+  }
+
+  const handleDrop = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+    if (e.dataTransfer?.files && e.dataTransfer.files.length > 0) {
+      handleProfileUpload(e.dataTransfer.files)
+    }
+  }
+
   return (
     <div className="admin-stack">
       {/* Profile Image */}
       <div className="admin-editor-block full">
-        <div className="admin-block-header">
-          <h3>Profile Image</h3>
-        </div>
-
-        <div className="admin-profile-section">
-          <div className="admin-profile-preview">
+        <div className="admin-profile-section" style={{ alignItems: 'center' }}>
+          <div className="admin-profile-preview" style={{ width: '130px', height: '130px' }}>
             {hero.profileImage && !imgError ? (
               <img src={hero.profileImage} alt="Profile" onError={() => setImgError(true)} />
             ) : (
@@ -234,19 +251,80 @@ const HomeEditor = ({ draft, updateDraft, setStatus, uploadingId, setUploadingId
             )}
           </div>
 
-          <div className="admin-profile-controls">
-            <div className="admin-url-upload-wrapper">
-              <Field
-                label="Image URL"
-                value={hero.profileImage}
-                onChange={(value) => {
-                  updateDraft((next) => {
-                    if (!next.hero) next.hero = {}
-                    next.hero.profileImage = value
-                  })
-                }}
-                placeholder="https://example.com/photo.jpg"
-              />
+          <div style={{ flex: 1, minWidth: '280px' }}>
+            <div className="admin-img-uploader-container" style={{ margin: 0 }}>
+              <div className="admin-img-uploader-header">
+                <div className="admin-img-uploader-title-group">
+                  <div className="admin-img-uploader-title">
+                    <FiUser />
+                    <span>Profile Image</span>
+                  </div>
+                  <span className="admin-img-uploader-kicker">HERO AVATAR PHOTO</span>
+                </div>
+
+                <div className="admin-img-mode-pills">
+                  <button
+                    type="button"
+                    className={`admin-img-pill ${uploadMode === 'file' ? 'active' : ''}`}
+                    onClick={() => setUploadMode('file')}
+                  >
+                    <FiUploadCloud /> Upload File
+                  </button>
+                  <button
+                    type="button"
+                    className={`admin-img-pill ${uploadMode === 'url' ? 'active' : ''}`}
+                    onClick={() => setUploadMode('url')}
+                  >
+                    <FiLink /> Image URL
+                  </button>
+                </div>
+              </div>
+
+              {uploadMode === 'file' ? (
+                <label
+                  className={`admin-img-dropzone-box ${isDragging ? 'dragging' : ''} ${
+                    uploadingId === 'hero-profile' ? 'uploading' : ''
+                  }`}
+                  style={{ padding: '24px 16px' }}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                >
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleProfileUpload(e.target.files, e)}
+                    disabled={uploadingId === 'hero-profile'}
+                  />
+                  <div className="admin-img-dropzone-icon-circle" style={{ width: 40, height: 40, fontSize: '1.2rem' }}>
+                    <FiUploadCloud />
+                  </div>
+                  <div className="admin-img-dropzone-prompt" style={{ fontSize: '0.9rem' }}>
+                    {uploadingId === 'hero-profile' ? (
+                      <span><FiRefreshCw style={{ animation: 'adminPulse 1s ease infinite' }} /> Uploading profile photo...</span>
+                    ) : (
+                      <>Drop profile photo here or <span className="admin-img-browse-highlight">click to browse</span></>
+                    )}
+                  </div>
+                  <div className="admin-img-dropzone-sub">JPG, PNG, WebP • Free Cloud Firestore</div>
+                </label>
+              ) : (
+                <div className="admin-img-url-box">
+                  <input
+                    type="url"
+                    placeholder="Paste image URL (https://...)"
+                    value={hero.profileImage || ''}
+                    onChange={(e) => {
+                      const val = e.target.value
+                      updateDraft((next) => {
+                        if (!next.hero) next.hero = {}
+                        next.hero.profileImage = val
+                      })
+                    }}
+                    className="admin-url-input"
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -517,127 +595,6 @@ const AboutEditor = ({ draft, updateDraft }) => {
   )
 }
 
-/* ─────────────────────────────────────────────
-   SKILLS EDITOR
-   ───────────────────────────────────────────── */
-const SkillsEditor = ({ draft, updateDraft }) => {
-  const categoryOptions = [
-    { value: 'frontend', label: 'Frontend' },
-    { value: 'backend', label: 'Backend' },
-    { value: 'languages', label: 'Programming Languages' },
-    { value: 'tools', label: 'Tools & Technologies' },
-  ]
-
-  const updateTechSkill = (index, field, value) => {
-    updateDraft((next) => {
-      next.skills.technical[index][field] = value
-    })
-  }
-
-  const addTechSkill = () => {
-    updateDraft((next) => {
-      next.skills.technical.push({ id: createId('tech'), name: '', category: 'frontend' })
-    })
-  }
-
-  const removeTechSkill = (index) => {
-    updateDraft((next) => {
-      next.skills.technical.splice(index, 1)
-    })
-  }
-
-  const updateSoftSkill = (index, field, value) => {
-    updateDraft((next) => {
-      next.skills.soft[index][field] = value
-    })
-  }
-
-  const addSoftSkill = () => {
-    updateDraft((next) => {
-      next.skills.soft.push({ id: createId('soft'), name_en: '', name_ar: '' })
-    })
-  }
-
-  const removeSoftSkill = (index) => {
-    updateDraft((next) => {
-      next.skills.soft.splice(index, 1)
-    })
-  }
-
-  return (
-    <div className="admin-editor-grid">
-      {/* Technical Skills */}
-      <div className="admin-editor-block">
-        <div className="admin-block-header">
-          <h3>Technical Skills</h3>
-          <button className="admin-small-btn" type="button" onClick={addTechSkill}>
-            <FiPlus /> Add Skill
-          </button>
-        </div>
-
-        <div className="admin-item-list">
-          {(draft.skills?.technical || []).map((skill, index) => (
-            <div className="admin-row-card" key={skill.id || index}>
-              <div className="admin-row-grid two">
-                <Field
-                  label="Skill Name"
-                  value={skill.name}
-                  onChange={(value) => updateTechSkill(index, 'name', value)}
-                />
-                <div className="admin-field">
-                  <span>Category</span>
-                  <select
-                    value={skill.category || 'frontend'}
-                    onChange={(e) => updateTechSkill(index, 'category', e.target.value)}
-                  >
-                    {categoryOptions.map((opt) => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              <button className="admin-icon-danger" type="button" onClick={() => removeTechSkill(index)}>
-                <FiTrash2 /> Remove
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Soft Skills */}
-      <div className="admin-editor-block">
-        <div className="admin-block-header">
-          <h3>Soft Skills</h3>
-          <button className="admin-small-btn" type="button" onClick={addSoftSkill}>
-            <FiPlus /> Add Skill
-          </button>
-        </div>
-
-        <div className="admin-item-list">
-          {(draft.skills?.soft || []).map((skill, index) => (
-            <div className="admin-row-card" key={skill.id || index}>
-              <div className="admin-row-grid two">
-                <Field
-                  label="Name (English)"
-                  value={skill.name_en}
-                  onChange={(value) => updateSoftSkill(index, 'name_en', value)}
-                />
-                <Field
-                  label="Name (Arabic)"
-                  value={skill.name_ar}
-                  onChange={(value) => updateSoftSkill(index, 'name_ar', value)}
-                />
-              </div>
-              <button className="admin-icon-danger" type="button" onClick={() => removeSoftSkill(index)}>
-                <FiTrash2 /> Remove
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  )
-}
 
 /* ─────────────────────────────────────────────
    CV LIST EDITOR
@@ -680,11 +637,66 @@ const CvListEditor = ({ title, items, fields, onAdd, onChange, onRemove }) => (
 /* ─────────────────────────────────────────────
    CV EDITOR
    ───────────────────────────────────────────── */
-const CVEditor = ({ draft, updateDraft }) => {
+const CVEditor = ({ draft, updateDraft, setStatus, uploadingId, setUploadingId }) => {
   const [cvLocale, setCvLocale] = useState('en')
   const cv = draft.cv || {}
   const data = cv[cvLocale] || {}
   const contact = cv.contact || {}
+
+  const [fullCvInput, setFullCvInput] = useState(cv.fullCvUrl?.startsWith('data:') ? '' : (cv.fullCvUrl || ''))
+  const [atsCvInput, setAtsCvInput] = useState(cv.atsCvUrl?.startsWith('data:') ? '' : (cv.atsCvUrl || ''))
+
+  useEffect(() => {
+    if (!cv.fullCvUrl?.startsWith('data:')) {
+      setFullCvInput(cv.fullCvUrl || '')
+    }
+  }, [cv.fullCvUrl])
+
+  useEffect(() => {
+    if (!cv.atsCvUrl?.startsWith('data:')) {
+      setAtsCvInput(cv.atsCvUrl || '')
+    }
+  }, [cv.atsCvUrl])
+
+  const updateCvFile = (field, value) => {
+    updateDraft((next) => {
+      if (!next.cv) next.cv = {}
+      next.cv[field] = value
+    })
+  }
+
+  const handlePdfUpload = (field, uploadKey, files, event) => {
+    const file = files?.[0]
+    if (!file) return
+    if (!file.name.toLowerCase().endsWith('.pdf') && file.type !== 'application/pdf') {
+      setStatus?.({ type: 'error', text: 'Please select a valid PDF file (.pdf)' })
+      return
+    }
+    if (file.size > 800 * 1024) {
+      setStatus?.({
+        type: 'warning',
+        text: 'File size is larger than 800KB. If it fails to save, paste a Google Drive public PDF link instead.',
+      })
+    }
+    setUploadingId?.(uploadKey)
+    setStatus?.({ type: 'info', text: `Attaching PDF file (${(file.size / 1024).toFixed(1)} KB)...` })
+
+    const reader = new FileReader()
+    reader.onload = () => {
+      const dataUrl = reader.result
+      updateCvFile(field, dataUrl)
+      if (field === 'fullCvUrl') setFullCvInput('')
+      if (field === 'atsCvUrl') setAtsCvInput('')
+      setUploadingId?.('')
+      setStatus?.({ type: 'success', text: 'PDF attached! Click Save at the top right to publish changes.' })
+      if (event?.target) event.target.value = ''
+    }
+    reader.onerror = () => {
+      setUploadingId?.('')
+      setStatus?.({ type: 'error', text: 'Could not read the PDF file from your device.' })
+    }
+    reader.readAsDataURL(file)
+  }
 
   const updateLocaleField = (field, value) => {
     updateDraft((next) => {
@@ -770,6 +782,151 @@ const CVEditor = ({ draft, updateDraft }) => {
 
   return (
     <div className="admin-stack">
+      {/* ── CV PDF Files Management (Exact match to Screenshot 1) ── */}
+      <div className="admin-cv-files-grid">
+        {/* Full PDF CV */}
+        <div className="admin-cv-file-card">
+          <div className="admin-cv-file-header">
+            <div className="admin-cv-file-icon">
+              <FiFileText />
+            </div>
+            <div>
+              <h4>Full PDF CV</h4>
+              <p>Primary downloadable CV</p>
+            </div>
+          </div>
+
+          <div className="admin-cv-upload-block">
+            <span className="admin-cv-upload-label">UPLOAD FILE (PDF)</span>
+            <div className="admin-cv-file-input-wrapper">
+              <label className={`admin-cv-custom-file-btn ${uploadingId === 'cv-full' ? 'uploading' : ''}`}>
+                <input
+                  type="file"
+                  accept="application/pdf"
+                  onChange={(e) => handlePdfUpload('fullCvUrl', 'cv-full', e.target.files, e)}
+                  disabled={uploadingId === 'cv-full'}
+                />
+                <FiUploadCloud /> {uploadingId === 'cv-full' ? 'Uploading...' : 'اختيار ملف / Choose File'}
+              </label>
+              <span className="admin-cv-filename">
+                {cv.fullCvUrl ? (
+                  cv.fullCvUrl.startsWith('data:') ? '✅ PDF Attached (Direct File)' : cv.fullCvUrl.slice(0, 26) + '...'
+                ) : (
+                  'لم يتم اختيار ملف'
+                )}
+              </span>
+              {cv.fullCvUrl && (
+                <button
+                  type="button"
+                  className="admin-cv-remove-file-btn"
+                  title="Remove CV File"
+                  onClick={() => {
+                    updateCvFile('fullCvUrl', '')
+                    setFullCvInput('')
+                    setStatus?.({ type: 'info', text: 'CV file removed. Click Save at the top.' })
+                  }}
+                >
+                  <FiTrash2 />
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="admin-cv-url-block">
+            <label>Or paste direct public link / Google Drive PDF link:</label>
+            <div className="admin-cv-url-input-row">
+              <input
+                type="url"
+                placeholder="https://..."
+                value={fullCvInput}
+                onChange={(e) => setFullCvInput(e.target.value)}
+              />
+              <button
+                type="button"
+                className="admin-cv-save-link-btn"
+                onClick={() => {
+                  updateCvFile('fullCvUrl', fullCvInput.trim())
+                  setStatus?.({ type: 'success', text: 'Full PDF link set! Remember to Save at the top.' })
+                }}
+              >
+                <FiLink /> Save
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* ATS-Friendly Resume */}
+        <div className="admin-cv-file-card">
+          <div className="admin-cv-file-header">
+            <div className="admin-cv-file-icon ats">
+              <FiAward />
+            </div>
+            <div>
+              <h4>ATS-Friendly Resume</h4>
+              <p>Optimized for applicant tracking systems</p>
+            </div>
+          </div>
+
+          <div className="admin-cv-upload-block">
+            <span className="admin-cv-upload-label">UPLOAD FILE (PDF)</span>
+            <div className="admin-cv-file-input-wrapper">
+              <label className={`admin-cv-custom-file-btn ${uploadingId === 'cv-ats' ? 'uploading' : ''}`}>
+                <input
+                  type="file"
+                  accept="application/pdf"
+                  onChange={(e) => handlePdfUpload('atsCvUrl', 'cv-ats', e.target.files, e)}
+                  disabled={uploadingId === 'cv-ats'}
+                />
+                <FiUploadCloud /> {uploadingId === 'cv-ats' ? 'Uploading...' : 'اختيار ملف / Choose File'}
+              </label>
+              <span className="admin-cv-filename">
+                {cv.atsCvUrl ? (
+                  cv.atsCvUrl.startsWith('data:') ? '✅ ATS PDF Attached (Direct File)' : cv.atsCvUrl.slice(0, 26) + '...'
+                ) : (
+                  'لم يتم اختيار ملف'
+                )}
+              </span>
+              {cv.atsCvUrl && (
+                <button
+                  type="button"
+                  className="admin-cv-remove-file-btn"
+                  title="Remove ATS File"
+                  onClick={() => {
+                    updateCvFile('atsCvUrl', '')
+                    setAtsCvInput('')
+                    setStatus?.({ type: 'info', text: 'ATS file removed. Click Save at the top.' })
+                  }}
+                >
+                  <FiTrash2 />
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="admin-cv-url-block">
+            <label>Or paste direct public link / Google Drive PDF link:</label>
+            <div className="admin-cv-url-input-row">
+              <input
+                type="url"
+                placeholder="https://..."
+                value={atsCvInput}
+                onChange={(e) => setAtsCvInput(e.target.value)}
+              />
+              <button
+                type="button"
+                className="admin-cv-save-link-btn"
+                onClick={() => {
+                  updateCvFile('atsCvUrl', atsCvInput.trim())
+                  setStatus?.({ type: 'success', text: 'ATS Resume link set! Remember to Save at the top.' })
+                }}
+              >
+                <FiLink /> Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="admin-language-switch">
         <button
           type="button"
@@ -1041,6 +1198,8 @@ const CardCollectionEditor = ({
   // local form state
   const [formState, setFormState] = useState(() => createCardItem(sectionKey))
   const [urlInput, setUrlInput] = useState('')
+  const [uploadMode, setUploadMode] = useState('file')
+  const [isDragging, setIsDragging] = useState(false)
 
   // Reset form when sectionKey changes
   useEffect(() => {
@@ -1134,6 +1293,33 @@ const CardCollectionEditor = ({
       setUploadingId('')
       if (event?.target) event.target.value = ''
     }
+  }
+
+  const handleDragOver = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(true)
+  }
+
+  const handleDragLeave = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+  }
+
+  const handleDrop = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+    if (e.dataTransfer?.files && e.dataTransfer.files.length > 0) {
+      handleUpload(e.dataTransfer.files)
+    }
+  }
+
+  const getSectionKicker = () => {
+    if (sectionKey === 'certifications') return 'CERTIFICATE SCREENSHOTS'
+    if (sectionKey === 'events') return 'EVENT SCREENSHOTS'
+    return 'PROJECT SCREENSHOTS'
   }
 
   const removeItem = (index) => {
@@ -1240,39 +1426,111 @@ const CardCollectionEditor = ({
             onChange={(v) => updateFormField('description_ar', v)}
           />
 
-          {/* Images Section — ALWAYS visible! */}
-          <div className="admin-images-section">
-            <div className="admin-images-header">
-              <div className="admin-images-title">
-                <FiImage />
-                <span>Images</span>
-                {(formState.images || []).length > 0 && (
-                  <span className="admin-image-count">{formState.images.length} photo{formState.images.length !== 1 ? 's' : ''}</span>
-                )}
+          {/* Images Section — Exact custom design from screenshot */}
+          <div className="admin-img-uploader-container">
+            {/* Header: Title on Left, Mode Pills on Right */}
+            <div className="admin-img-uploader-header">
+              <div className="admin-img-uploader-title-group">
+                <div className="admin-img-uploader-title">
+                  <FiImage />
+                  <span>Images</span>
+                </div>
+                <span className="admin-img-uploader-kicker">{getSectionKicker()}</span>
               </div>
-            </div>
-            <div className="admin-images-actions-row">
-              <div className="admin-url-add-group">
-                <input
-                  type="url"
-                  placeholder="Paste image URL..."
-                  value={urlInput}
-                  onChange={(e) => setUrlInput(e.target.value)}
-                  className="admin-url-input"
-                />
-                <button type="button" onClick={handleAddUrl} disabled={!urlInput.trim()} className="admin-url-add-btn">
-                  <FiPlus />
+
+              <div className="admin-img-mode-pills">
+                <button
+                  type="button"
+                  className={`admin-img-pill ${uploadMode === 'file' ? 'active' : ''}`}
+                  onClick={() => setUploadMode('file')}
+                >
+                  <FiUploadCloud /> Upload File
+                </button>
+                <button
+                  type="button"
+                  className={`admin-img-pill ${uploadMode === 'url' ? 'active' : ''}`}
+                  onClick={() => setUploadMode('url')}
+                >
+                  <FiLink /> Image URL
                 </button>
               </div>
             </div>
+
+            {/* Upload Area based on Mode */}
+            {uploadMode === 'file' ? (
+              <label
+                className={`admin-img-dropzone-box ${isDragging ? 'dragging' : ''} ${
+                  uploadingId === (formState.id || 'new') ? 'uploading' : ''
+                }`}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+              >
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={(e) => handleUpload(e.target.files, e)}
+                  disabled={uploadingId === (formState.id || 'new')}
+                />
+                <div className="admin-img-dropzone-icon-circle">
+                  <FiUploadCloud />
+                </div>
+                <div className="admin-img-dropzone-prompt">
+                  {uploadingId === (formState.id || 'new') ? (
+                    <span>
+                      <FiRefreshCw style={{ animation: 'adminPulse 1s ease infinite' }} /> Uploading & compressing...
+                    </span>
+                  ) : (
+                    <>
+                      Drop image here or <span className="admin-img-browse-highlight">click to browse</span>
+                    </>
+                  )}
+                </div>
+                <div className="admin-img-dropzone-sub">
+                  JPG, PNG, WebP, GIF • Free Cloud Firestore
+                </div>
+              </label>
+            ) : (
+              <div className="admin-img-url-box">
+                <input
+                  type="url"
+                  placeholder="Paste image URL (https://...)"
+                  value={urlInput}
+                  onChange={(e) => setUrlInput(e.target.value)}
+                  className="admin-url-input"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault()
+                      handleAddUrl(e)
+                    }
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={handleAddUrl}
+                  disabled={!urlInput.trim()}
+                  className="admin-url-add-btn"
+                >
+                  <FiPlus /> Add
+                </button>
+              </div>
+            )}
+
+            {/* Thumbnail Previews Grid */}
             {(formState.images || []).length > 0 && (
-              <div className="admin-image-gallery-enhanced">
+              <div className="admin-img-previews-grid">
                 {formState.images.map((url, imgIndex) => (
-                  <div className="admin-image-thumb-enhanced" key={`${url}-${imgIndex}`}>
-                    <img src={url} alt={`Image ${imgIndex + 1}`} loading="lazy" />
-                    <span className="admin-image-badge">{imgIndex + 1}</span>
-                    <button className="admin-image-remove-btn" type="button" onClick={() => removeFormImage(imgIndex)}>
-                      <FiX />
+                  <div className="admin-img-preview-card" key={`${url}-${imgIndex}`}>
+                    <img src={url} alt={`Screenshot ${imgIndex + 1}`} loading="lazy" />
+                    <span className="admin-img-preview-badge">#{imgIndex + 1}</span>
+                    <button
+                      className="admin-img-preview-remove"
+                      type="button"
+                      title="Delete image"
+                      onClick={() => removeFormImage(imgIndex)}
+                    >
+                      <FiTrash2 />
                     </button>
                   </div>
                 ))}
@@ -1472,12 +1730,17 @@ const AdminPanel = () => {
       return <AboutEditor draft={draft} updateDraft={updateDraft} />
     }
 
-    if (activeTab === 'skills') {
-      return <SkillsEditor draft={draft} updateDraft={updateDraft} />
-    }
 
     if (activeTab === 'cv') {
-      return <CVEditor draft={draft} updateDraft={updateDraft} />
+      return (
+        <CVEditor
+          draft={draft}
+          updateDraft={updateDraft}
+          setStatus={setStatus}
+          uploadingId={uploadingId}
+          setUploadingId={setUploadingId}
+        />
+      )
     }
 
     if (activeTab === 'achievements') {
@@ -1507,7 +1770,6 @@ const AdminPanel = () => {
   const sectionCounts = {
     home: 1,
     about: (draft.about?.timeline || []).length,
-    skills: (draft.skills?.technical || []).length + (draft.skills?.soft || []).length,
     cv: 1,
     achievements: (draft.achievements?.stats || []).length + (draft.achievements?.items || []).length,
     projects: (draft.projects || []).length,
@@ -1623,9 +1885,9 @@ const AdminPanel = () => {
                 </div>
                 <div className="admin-stat-item">
                   <span className="admin-stat-value">
-                    {(draft.skills?.technical || []).length + (draft.skills?.soft || []).length}
+                    {(draft.achievements?.stats || []).length + (draft.achievements?.items || []).length}
                   </span>
-                  <span className="admin-stat-label">Skills</span>
+                  <span className="admin-stat-label">Achieve</span>
                 </div>
               </div>
             </div>

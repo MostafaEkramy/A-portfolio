@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { FiGithub, FiLinkedin, FiMail, FiMapPin, FiPhone, FiPrinter, FiArrowLeft } from 'react-icons/fi'
+import { FiGithub, FiLinkedin, FiMail, FiMapPin, FiPhone, FiPrinter, FiArrowLeft, FiFileText } from 'react-icons/fi'
 import { useTranslation } from '../../context/TranslationContext'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent'
 import './CV.css'
@@ -9,7 +9,7 @@ const getLocaleData = (cv, locale) => cv?.[locale] || cv?.en || {}
 
 const CV = () => {
   const navigate = useNavigate()
-  const { locale } = useTranslation()
+  const { t, locale } = useTranslation()
   const { content } = usePortfolioContent()
   const cv = content.cv || {}
   const data = getLocaleData(cv, locale)
@@ -43,20 +43,58 @@ const CV = () => {
     },
   ].filter((item) => item.value)
 
-  const handlePrint = () => {
-    window.print()
+  const handleFullCvClick = () => {
+    if (cv.fullCvUrl) {
+      if (cv.fullCvUrl.startsWith('data:')) {
+        const link = document.createElement('a')
+        link.href = cv.fullCvUrl
+        link.download = 'Ahmed_EL_Saeed_CV.pdf'
+        link.target = '_blank'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+      } else {
+        window.open(cv.fullCvUrl, '_blank', 'noopener,noreferrer')
+      }
+    } else {
+      window.print()
+    }
+  }
+
+  const handleAtsCvClick = () => {
+    if (cv.atsCvUrl) {
+      if (cv.atsCvUrl.startsWith('data:')) {
+        const link = document.createElement('a')
+        link.href = cv.atsCvUrl
+        link.download = 'Ahmed_EL_Saeed_ATS_Resume.pdf'
+        link.target = '_blank'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+      } else {
+        window.open(cv.atsCvUrl, '_blank', 'noopener,noreferrer')
+      }
+    } else {
+      window.print()
+    }
   }
 
   return (
     <section className="cv-page section">
       <div className="container">
         <div className="cv-actions no-print">
-          <button className="btn-outline cv-back-btn" onClick={() => navigate('/')}>
-            <FiArrowLeft /> {locale === 'ar' ? 'العودة للموقع' : 'Back to Portfolio'}
+          <button className="btn-outline cv-back-btn" onClick={() => navigate('/')} type="button">
+            <FiArrowLeft /> {t('cvBack')}
           </button>
-          <button className="btn-primary" onClick={handlePrint}>
-            <FiPrinter /> {data.downloadText}
-          </button>
+
+          <div className="cv-actions-right">
+            <button className="cv-ats-btn" onClick={handleAtsCvClick} type="button">
+              <FiFileText /> {t('cvAtsBtn')}
+            </button>
+            <button className="cv-download-btn" onClick={handleFullCvClick} type="button">
+              <FiPrinter /> {data.downloadText || t('cvDownload')}
+            </button>
+          </div>
         </div>
 
         <motion.div

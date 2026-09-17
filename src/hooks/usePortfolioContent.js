@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { cloneDefaultContent } from '../data/defaultContent'
 import { isFirebaseConfigured } from '../lib/firebase'
-import { subscribePortfolioContent } from '../services/contentService'
+import { subscribePortfolioContentWithImages } from '../services/contentService'
 
 export const usePortfolioContent = () => {
   const [content, setContent] = useState(() => cloneDefaultContent())
@@ -11,7 +11,7 @@ export const usePortfolioContent = () => {
   useEffect(() => {
     setIsLoading(isFirebaseConfigured)
 
-    const unsubscribe = subscribePortfolioContent(
+    const unsubscribe = subscribePortfolioContentWithImages(
       (nextContent) => {
         setContent(nextContent)
         setIsLoading(false)

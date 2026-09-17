@@ -16,7 +16,6 @@ const Footer = () => {
   const navLinks = [
     { name: t('navHome'), path: '/' },
     { name: t('navCV'), path: '/cv' },
-    { name: t('navSkills'), path: '/skills' },
     { name: t('navProjects'), path: '/projects' },
     { name: t('navAchievements'), path: '/achievements' },
     { name: t('navEvents'), path: '/events' },
