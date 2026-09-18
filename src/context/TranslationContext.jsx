@@ -56,6 +56,11 @@ const translations = {
 
     // Projects
     projectsTitle: 'My Projects',
+    projectsSearchPlaceholder: 'Search projects...',
+    projectsFilterAll: 'All',
+    projectsLiveDemo: 'Live Demo',
+    projectsOf: 'of',
+    projectsNoResults: 'No projects found',
     proj1Title: 'Portfolio Website',
     proj1Desc: 'A modern, responsive personal portfolio built with React.js featuring smooth animations and dark theme.',
     proj2Title: 'Task Management App',
@@ -199,6 +204,11 @@ const translations = {
 
     // Projects
     projectsTitle: 'مشاريعي',
+    projectsSearchPlaceholder: 'ابحث عن مشروع...',
+    projectsFilterAll: 'الكل',
+    projectsLiveDemo: 'عرض مباشر',
+    projectsOf: 'من',
+    projectsNoResults: 'لا توجد مشاريع',
     proj1Title: 'موقع معرض الأعمال الشخصي',
     proj1Desc: 'موقع ويب تعريفي شخصي متجاوب ومصمم بأحدث التقنيات مع تأثيرات حركية جذابة وتنسيق ألوان متميز.',
     proj2Title: 'تطبيق إدارة المهام المتكامل',

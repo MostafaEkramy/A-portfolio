@@ -80,6 +80,17 @@ const createCardItem = (sectionKey) => {
     }
   }
 
+  if (sectionKey === 'projects') {
+    return {
+      ...base,
+      title_en: '',
+      title_ar: '',
+      category: '',
+      tags: [],
+      liveDemo: '',
+    }
+  }
+
   return {
     ...base,
     title_en: '',
@@ -1425,6 +1436,27 @@ const CardCollectionEditor = ({
             value={formState.description_ar || ''}
             onChange={(v) => updateFormField('description_ar', v)}
           />
+
+          {/* Project-specific fields */}
+          {sectionKey === 'projects' && (
+            <>
+              <Field
+                label="Category (e.g. React, Web, Mobile)"
+                value={formState.category || ''}
+                onChange={(v) => updateFormField('category', v)}
+              />
+              <Field
+                label="Tech Tags (comma-separated, e.g. React, JavaScript, Firebase)"
+                value={Array.isArray(formState.tags) ? formState.tags.join(', ') : (formState.tags || '')}
+                onChange={(v) => updateFormField('tags', v.split(',').map(t => t.trim()).filter(Boolean))}
+              />
+              <Field
+                label="Live Demo URL"
+                value={formState.liveDemo || ''}
+                onChange={(v) => updateFormField('liveDemo', v)}
+              />
+            </>
+          )}
 
           {/* Images Section — Exact custom design from screenshot */}
           <div className="admin-img-uploader-container">
