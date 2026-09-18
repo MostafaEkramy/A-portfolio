@@ -312,6 +312,12 @@
   box-shadow: 0 4px 15px rgba(0, 119, 181, 0.3);
 }
 
+.cert-social-btn.github:hover {
+  background: #24292e;
+  border-color: #6e5494;
+  box-shadow: 0 4px 15px rgba(110, 84, 148, 0.3);
+}
+
 /* ── Responsive ── */
 @media (max-width: 900px) {
   .certs-grid {

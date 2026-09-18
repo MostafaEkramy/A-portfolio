@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { FiChevronLeft, FiChevronRight, FiCamera, FiExternalLink, FiX, FiSearch } from 'react-icons/fi'
-import { FaLinkedinIn, FaFacebookF, FaInstagram } from 'react-icons/fa'
+import { FaLinkedinIn, FaFacebookF, FaInstagram, FaGithub } from 'react-icons/fa'
 import { useTranslation } from '../../context/TranslationContext'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent'
 import './Projects.css'
@@ -203,6 +203,17 @@ const ProjectCard = ({ project, index, inView, locale, t, onImageClick }) => {
             >
               <FiExternalLink size={14} />
               {t('projectsLiveDemo')}
+            </a>
+          )}
+          {((project.socials?.github && project.socials.github !== '#') || (project.github && project.github !== '#')) && (
+            <a
+              href={project.socials?.github || project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="project-action-btn project-action-btn--github"
+            >
+              <FaGithub size={14} />
+              GitHub
             </a>
           )}
           {project.socials?.linkedin && project.socials.linkedin !== '#' && (

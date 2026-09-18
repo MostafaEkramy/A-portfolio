@@ -411,6 +411,20 @@
   background: linear-gradient(135deg, #00c4e8, #0087c6);
 }
 
+.project-action-btn--github {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #e2e8f0;
+}
+
+.project-action-btn--github:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
 .project-action-btn--linkedin {
   background: transparent;
   border: 1px solid rgba(0, 119, 181, 0.4);

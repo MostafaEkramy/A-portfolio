@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa'
+import { FaFacebookF, FaInstagram, FaLinkedinIn, FaGithub } from 'react-icons/fa'
 import { FiChevronLeft, FiChevronRight, FiCalendar, FiCamera, FiAward } from 'react-icons/fi'
 import { useTranslation } from '../../context/TranslationContext'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent'
@@ -130,6 +130,11 @@ const Certifications = () => {
                       {cert.socials?.instagram && cert.socials.instagram !== '#' && (
                         <a href={cert.socials.instagram} target="_blank" rel="noopener noreferrer" className="cert-social-btn instagram" aria-label="Instagram">
                           <FaInstagram />
+                        </a>
+                      )}
+                      {cert.socials?.github && cert.socials.github !== '#' && (
+                        <a href={cert.socials.github} target="_blank" rel="noopener noreferrer" className="cert-social-btn github" aria-label="GitHub">
+                          <FaGithub />
                         </a>
                       )}
                       {cert.socials?.linkedin && cert.socials.linkedin !== '#' && (

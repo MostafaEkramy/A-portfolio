@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { FiChevronLeft, FiChevronRight, FiMapPin, FiCalendar, FiCamera } from 'react-icons/fi'
-import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa'
+import { FaFacebookF, FaInstagram, FaLinkedinIn, FaGithub } from 'react-icons/fa'
 import { useTranslation } from '../../context/TranslationContext'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent'
 import './Events.css'
@@ -155,6 +155,17 @@ const Events = () => {
                           aria-label="Instagram"
                         >
                           <FaInstagram />
+                        </a>
+                      )}
+                      {event.socials?.github && event.socials.github !== '#' && (
+                        <a
+                          href={event.socials.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="event-inline-social-btn github"
+                          aria-label="GitHub"
+                        >
+                          <FaGithub />
                         </a>
                       )}
                       {event.socials?.linkedin && event.socials.linkedin !== '#' && (

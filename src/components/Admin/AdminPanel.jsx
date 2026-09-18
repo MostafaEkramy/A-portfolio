@@ -59,7 +59,7 @@ const splitLines = (value) =>
 
 const joinLines = (items) => (Array.isArray(items) ? items : []).join('\n')
 
-const createSocials = () => ({ instagram: '', facebook: '', linkedin: '' })
+const createSocials = () => ({ instagram: '', facebook: '', linkedin: '', github: '' })
 
 const createCardItem = (sectionKey) => {
   const base = {
@@ -1450,11 +1450,6 @@ const CardCollectionEditor = ({
                 value={Array.isArray(formState.tags) ? formState.tags.join(', ') : (formState.tags || '')}
                 onChange={(v) => updateFormField('tags', v.split(',').map(t => t.trim()).filter(Boolean))}
               />
-              <Field
-                label="Live Demo URL"
-                value={formState.liveDemo || ''}
-                onChange={(v) => updateFormField('liveDemo', v)}
-              />
             </>
           )}
 
@@ -1570,12 +1565,20 @@ const CardCollectionEditor = ({
             )}
           </div>
 
-          {/* Social Links — ALWAYS visible! */}
+          {/* Social & Project Links — ALWAYS visible! */}
           <div className="admin-split-socials">
             <h4><FiLink /> Social Links</h4>
+            {sectionKey === 'projects' && (
+              <Field
+                label="Live Demo URL"
+                value={formState.liveDemo || ''}
+                onChange={(v) => updateFormField('liveDemo', v)}
+              />
+            )}
+            <Field label="GitHub URL" value={formState.socials?.github || ''} onChange={(v) => updateFormSocial('github', v)} />
+            <Field label="LinkedIn URL" value={formState.socials?.linkedin || ''} onChange={(v) => updateFormSocial('linkedin', v)} />
             <Field label="Facebook URL" value={formState.socials?.facebook || ''} onChange={(v) => updateFormSocial('facebook', v)} />
             <Field label="Instagram URL" value={formState.socials?.instagram || ''} onChange={(v) => updateFormSocial('instagram', v)} />
-            <Field label="LinkedIn URL" value={formState.socials?.linkedin || ''} onChange={(v) => updateFormSocial('linkedin', v)} />
           </div>
 
           <button className="admin-primary-btn" type="submit" style={{ marginTop: '12px' }}>
