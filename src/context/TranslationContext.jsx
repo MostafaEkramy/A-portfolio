@@ -113,6 +113,7 @@ const translations = {
     // Certifications
     certsTitle: 'Certifications',
     certsViewCred: 'View Credential',
+    certsViewCertificate: 'View Certificate',
     certsModalTitle: 'Certification Details',
     certsModalIssuer: 'Issued by',
     certsModalDesc: 'This certification validates proficiency and demonstrates commitment to continuous learning and professional development.',
@@ -261,6 +262,7 @@ const translations = {
     // Certifications
     certsTitle: 'الشهادات المعتمدة',
     certsViewCred: 'عرض الشهادة المعتمدة',
+    certsViewCertificate: 'عرض الشهادة',
     certsModalTitle: 'تفاصيل الشهادة',
     certsModalIssuer: 'جهة الاعتماد',
     certsModalDesc: 'تؤكد هذه الشهادة الكفاءة والاحترافية البرمجية، وتجسد الالتزام الراسخ بمواصلة التعلم وصقل المهارات الشخصية والعملية.',
