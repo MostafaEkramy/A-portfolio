@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useMemo } from 'react'
+import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { FiChevronLeft, FiChevronRight, FiCamera, FiExternalLink, FiX, FiSearch } from 'react-icons/fi'
@@ -16,75 +17,107 @@ const ImageLightbox = ({ images, activeIndex, title, onClose, onPrev, onNext, on
       if (e.key === 'ArrowRight') onNext()
     }
     document.addEventListener('keydown', handleKey)
+    const prevOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     return () => {
       document.removeEventListener('keydown', handleKey)
-      document.body.style.overflow = ''
+      document.body.style.overflow = prevOverflow
     }
   }, [onClose, onPrev, onNext])
 
-  return (
+  return createPortal(
     <motion.div
       className="lightbox-overlay"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.25 }}
       onClick={onClose}
     >
-      <div className="lightbox-container" onClick={(e) => e.stopPropagation()}>
-        {/* Close Button */}
-        <button className="lightbox-close" onClick={onClose} aria-label="Close">
-          <FiX size={24} />
-        </button>
+      <div className="lightbox-container" onClick={onClose}>
+        {/* Top Header with title and prominent Close button */}
+        <div className="lightbox-topbar" onClick={(e) => e.stopPropagation()}>
+          <div className="lightbox-topbar-info">
+            <h3 className="lightbox-title">{title}</h3>
+            <span className="lightbox-counter">
+              {activeIndex + 1} {t('projectsOf')} {images.length}
+            </span>
+          </div>
+          <button
+            className="lightbox-close"
+            onClick={(e) => {
+              e.stopPropagation()
+              onClose()
+            }}
+            aria-label="Close"
+            type="button"
+          >
+            <FiX size={22} />
+            <span className="lightbox-close-label">إغلاق / Close</span>
+          </button>
+        </div>
 
         {/* Main Image Area */}
-        <div className="lightbox-main">
+        <div className="lightbox-main" onClick={onClose}>
           {/* Left Arrow */}
           {images.length > 1 && (
-            <button className="lightbox-arrow lightbox-arrow--left" onClick={onPrev} aria-label="Previous">
-              <FiChevronLeft size={32} />
+            <button
+              className="lightbox-arrow lightbox-arrow--left"
+              onClick={(e) => {
+                e.stopPropagation()
+                onPrev()
+              }}
+              aria-label="Previous"
+              type="button"
+            >
+              <FiChevronLeft size={30} />
             </button>
           )}
 
           {/* Image */}
-          <AnimatePresence mode="wait">
-            <motion.img
-              key={activeIndex}
-              src={images[activeIndex]}
-              alt={`${title} - ${activeIndex + 1}`}
-              className="lightbox-image"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.25 }}
-            />
-          </AnimatePresence>
+          <div className="lightbox-image-wrapper" onClick={(e) => e.stopPropagation()}>
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={activeIndex}
+                src={images[activeIndex]}
+                alt={`${title} - ${activeIndex + 1}`}
+                className="lightbox-image"
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.96 }}
+                transition={{ duration: 0.2 }}
+              />
+            </AnimatePresence>
+          </div>
 
           {/* Right Arrow */}
           {images.length > 1 && (
-            <button className="lightbox-arrow lightbox-arrow--right" onClick={onNext} aria-label="Next">
-              <FiChevronRight size={32} />
+            <button
+              className="lightbox-arrow lightbox-arrow--right"
+              onClick={(e) => {
+                e.stopPropagation()
+                onNext()
+              }}
+              aria-label="Next"
+              type="button"
+            >
+              <FiChevronRight size={30} />
             </button>
           )}
         </div>
 
-        {/* Bottom Info */}
-        <div className="lightbox-info">
-          <h3 className="lightbox-title">{title}</h3>
-          <span className="lightbox-counter">
-            {activeIndex + 1} {t('projectsOf')} {images.length}
-          </span>
-        </div>
-
         {/* Thumbnail Strip */}
         {images.length > 1 && (
-          <div className="lightbox-thumbnails">
+          <div className="lightbox-thumbnails" onClick={(e) => e.stopPropagation()}>
             {images.map((img, i) => (
               <button
                 key={i}
                 className={`lightbox-thumb ${i === activeIndex ? 'active' : ''}`}
-                onClick={() => onSelect(i)}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onSelect(i)
+                }}
+                type="button"
               >
                 <img src={img} alt={`Thumbnail ${i + 1}`} />
               </button>
@@ -92,7 +125,8 @@ const ImageLightbox = ({ images, activeIndex, title, onClose, onPrev, onNext, on
           </div>
         )}
       </div>
-    </motion.div>
+    </motion.div>,
+    document.body
   )
 }
 
